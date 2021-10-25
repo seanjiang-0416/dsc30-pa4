@@ -41,15 +41,14 @@ public class DoublyLinkedListTest {
     @Test
     public void doubleLinkedList_test_3(){
         assertEquals(5,several.size());
-        assertEquals(Integer.valueOf(0),one.get(0));
-        assertEquals(Integer.valueOf(1),one.get(1));
-        assertEquals(Integer.valueOf(2),one.get(2));
-        assertEquals(Integer.valueOf(3),one.get(3));
-        assertEquals(Integer.valueOf(4),one.get(4));
-
+        assertEquals(Integer.valueOf(1),several.get(0));
+        assertEquals(Integer.valueOf(2),several.get(1));
+        assertEquals(Integer.valueOf(3),several.get(2));
+        assertEquals(Integer.valueOf(4),several.get(3));
+        assertEquals(Integer.valueOf(5),several.get(4));
     }
 
-
+    
 
 
 }

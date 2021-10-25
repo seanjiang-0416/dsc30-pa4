@@ -123,7 +123,6 @@ public class DoublyLinkedList<T> extends AbstractList<T> {
     /**
      * Creates a new, empty doubly-linked list.
      */
-    //private DoublyLinkedList<T> dl_list; //= new DoublyLinkedList<T>();;
     public DoublyLinkedList() {
         // TODO: complete default constructor
         head = new Node(null);
@@ -175,6 +174,7 @@ public class DoublyLinkedList<T> extends AbstractList<T> {
         if (index < 0 || index > size()){
             throw new IndexOutOfBoundsException();
         }
+        nelems++;
         Node cur = new Node(element);
         Node original = getNth(index);
         Node last = original.getPrev();
@@ -182,23 +182,7 @@ public class DoublyLinkedList<T> extends AbstractList<T> {
         last.setNext(cur);
         cur.setNext(original);
         original.setPrev(cur);
-        nelems++;
 
-        /*
-        if(index == 0){
-            cur.setNext();
-            cur.setPrev(head);
-        }
-        else if(index == this.size()-1){
-            cur.setNext(tail);
-            cur.setPrev(new Node(this.get(-1)));
-        }
-        else{
-            cur.setNext(new Node(this.get(index)));
-            cur.setPrev(new Node(this.get(index-1)));
-        }
-
-         */
 
 
     }
@@ -210,7 +194,7 @@ public class DoublyLinkedList<T> extends AbstractList<T> {
     public void clear() {
         // TODO: implement clear
         head.setNext(tail);
-        tail.setPrev(tail);
+        tail.setPrev(head);
         nelems = 0;
     }
 
@@ -241,7 +225,7 @@ public class DoublyLinkedList<T> extends AbstractList<T> {
     @Override
     public T get(int index) throws IndexOutOfBoundsException {
         // TODO: Fill in implementation to get the node at index
-        if (index < 0 || index > size()-1){
+        if (index < 0 || index >= size()){
             throw new IndexOutOfBoundsException();
         }
         Node cur = head;
@@ -258,9 +242,9 @@ public class DoublyLinkedList<T> extends AbstractList<T> {
      */
     private Node getNth(int index) {
         // TODO: implement
-        //if (index < 0 || index > size()){
-        //    throw new IndexOutOfBoundsException();
-        //}
+        if (index < 0 || index >= size()){
+            throw new IndexOutOfBoundsException();
+        }
         Node cur = head;
         for (int i = 0; i <= index; i++){
             cur = cur.getNext();
@@ -298,7 +282,7 @@ public class DoublyLinkedList<T> extends AbstractList<T> {
         Node cur = getNth(index);
         cur.getPrev().setNext(cur.getNext());
         cur.getNext().setPrev(cur.getPrev());
-
+        nelems--;
         return cur.getElement();
         /*
         T output = this.get(index);
