@@ -69,6 +69,9 @@ public class RoundRobin {
                     waitTime += (waitlist.size() - 1);
                 }
             }
+            //check if it is finished
+            //if it is, remove it from waitlist and add it to finished
+            //if it isn't, remove it from waitlist and add it back
                 if(cur.isFinished()){
                     finished.add(waitlist.remove(0));
                 }

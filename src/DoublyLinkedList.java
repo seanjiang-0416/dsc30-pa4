@@ -149,6 +149,7 @@ public class DoublyLinkedList<T> extends AbstractList<T> {
         }
         Node cur = new Node(element);
         Node last = tail.getPrev();
+        //reconnect the nodes
         last.setNext(cur);
         cur.setPrev(last);
         cur.setNext(tail);
@@ -179,6 +180,7 @@ public class DoublyLinkedList<T> extends AbstractList<T> {
         Node cur = new Node(element);
         Node original = getNth(index);
         Node last = original.getPrev();
+        //reconnect the nodes
         cur.setPrev(last);
         last.setNext(cur);
         cur.setNext(original);
@@ -280,6 +282,7 @@ public class DoublyLinkedList<T> extends AbstractList<T> {
             throw new IndexOutOfBoundsException();
         }
         Node cur = getNth(index);
+        //reconnect the nodes
         cur.getPrev().setNext(cur.getNext());
         cur.getNext().setPrev(cur.getPrev());
         nelems--;
@@ -303,6 +306,7 @@ public class DoublyLinkedList<T> extends AbstractList<T> {
         if (index < 0 || index >= size()){
             throw new IndexOutOfBoundsException();
         }
+        //reconnect the cur and the original
         Node cur = new Node(element);
         Node original = getNth(index);
         cur.setNext(original.getNext());
@@ -355,6 +359,7 @@ public class DoublyLinkedList<T> extends AbstractList<T> {
 
         for (int i= 0; i <= original_size; i++){
             cur = cur.getNext();
+            //remove the index which is the multiples of base
             if(i % base == 0){
                 cur.remove();
             }
@@ -380,6 +385,7 @@ public class DoublyLinkedList<T> extends AbstractList<T> {
             Node other_Next = other_cur.getNext();
             Node Previous = cur.getPrev();
             Node other_Previous = other_cur.getPrev();
+            //reconnect all the nodes
             cur.setNext(other_Next);
             cur.setPrev(other_Previous);
             other_Next.setPrev(cur);
