@@ -6,7 +6,8 @@
 import java.util.AbstractList;
 
 /**
- * TODO
+ * DoublyLinkedList extends AbstractList class and override the methods
+ * originally in the AbstractList class
  * @author Zhixing Jiang
  * @since October 24, 2021
  */
@@ -160,8 +161,8 @@ public class DoublyLinkedList<T> extends AbstractList<T> {
     /**
      * Adds an element to a certain index in the list, shifting exist elements
      * create room. Does not accept null values.
-     *
-     * TODO: Javadoc comments
+     * @param index the given index
+     * @param element the input data
      */
     @Override
     public void add(int index, T element)
@@ -201,7 +202,7 @@ public class DoublyLinkedList<T> extends AbstractList<T> {
     /**
      * Determine if the list contains the data element anywhere in the list.
      *
-     * TODO: Javadoc comments
+     * @param element the input used to check if the list has the given element
      */
     @Override
     public boolean contains(Object element) {
@@ -219,8 +220,8 @@ public class DoublyLinkedList<T> extends AbstractList<T> {
 
     /**
      * Retrieves the element stored with a given index on the list.
-     *
-     * TODO: Javadoc comments
+     * @param index the given index
+     * @return the element at the given index
      */
     @Override
     public T get(int index) throws IndexOutOfBoundsException {
@@ -237,8 +238,8 @@ public class DoublyLinkedList<T> extends AbstractList<T> {
 
     /**
      * Helper method to get the Nth node in our list
-     *
-     * TODO: Javadoc comments
+     * @param index the given index
+     * @return Node the node at the input index
      */
     private Node getNth(int index) {
         // TODO: implement
@@ -254,8 +255,7 @@ public class DoublyLinkedList<T> extends AbstractList<T> {
 
     /**
      * Determine if the list empty
-     *
-     * TODO: javadoc comments
+     * @return true if it is empty, and false if otherwise
      */
     @Override
     public boolean isEmpty() {
@@ -270,8 +270,8 @@ public class DoublyLinkedList<T> extends AbstractList<T> {
 
     /**
      * Remove the element from position index in the list
-     *
-     * TODO: javadoc comments
+     * @param index the given index
+     * @return the element that is removed
      */
     @Override
     public T remove(int index) throws IndexOutOfBoundsException {
@@ -284,32 +284,14 @@ public class DoublyLinkedList<T> extends AbstractList<T> {
         cur.getNext().setPrev(cur.getPrev());
         nelems--;
         return cur.getElement();
-        /*
-        T output = this.get(index);
-        this.remove(index);
-        Node cur = new Node(this.get(index));
-        if(index == 0){
-            cur.setPrev(head);
-            cur.setNext(new Node(this.get(index+1)));
-        }
-        else if(index  == size() - 1){
-            cur.setPrev(new Node(this.get(index-1)));
-            cur.setNext(tail);
-        }
-        else{
-            cur.setPrev(new Node(this.get(index-1)));
-            cur.setNext(new Node(this.get(index+1)));
-        }
-        nelems--;
-        return (T) output;
 
-         */
     }
 
     /**
      * Set the value of an element at a certain index in the list.
-     *
-     * TODO: javadoc comments
+     * @param index the given index
+     * @param element the input data
+     * @return the original data at the index
      */
     @Override
     public T set(int index, T element)
@@ -323,42 +305,16 @@ public class DoublyLinkedList<T> extends AbstractList<T> {
         }
         Node cur = new Node(element);
         Node original = getNth(index);
+        cur.setNext(original.getNext());
+        cur.setPrev(original.getPrev());
         original.getPrev().setNext(cur);
         original.getNext().setPrev(cur);
-        /*
-        this.set(index, element);
-        if (index == 0) {
-            cur.setPrev(head);
-            if (size() == 1) {
-                cur.setNext(tail);
-            }
-            else {
-                cur.setNext(new Node(this.get(index + 1)));
-            }
-        }
-        else if (index == size() - 1){
-            cur.setNext(tail);
-            if (size() == 1){
-                cur.setPrev(head);
-            }
-            else{
-                cur.setPrev(new Node(this.get(index - 1)));
-            }
-        }
-        else{
-            cur.setNext(new Node(this.get(index+1)));
-            cur.setPrev(new Node(this.get(index-1)));
-        }
-        return (T) original;
-
-         */
         return (T) original.getElement();
     }
 
     /**
      * Retrieves the amount of elements that are currently on the list.
-     *
-     * TODO: javadoc comments
+     * @return the size of the doublyLinkedList
      */
     @Override
     public int size() {
@@ -370,13 +326,13 @@ public class DoublyLinkedList<T> extends AbstractList<T> {
      * String representation of this list in the form of:
      * "[(head) -> elem1 -> elem2 -> ... -> elemN -> (tail)]"
      *
-     * TODO: javadoc comments
+     * @return the string output in the format above
      */
     @Override
     public String toString() {
         String output = "[(head) ->";
         for (int i = 0; i < size(); i++){
-            output = output + get(i) + " ->";
+            output = output + " " + get(i) + " ->";
         }
         output += " (tail)]";
         return output;
@@ -387,19 +343,54 @@ public class DoublyLinkedList<T> extends AbstractList<T> {
     /**
      * Remove nodes whose index is a multiple of base
      *
-     * TODO: javadoc comments
+     * @param base the number used as modulus
      */
     public void removeMultipleOf(int base) {
-        // TODO: complete implementation       
+        // TODO: complete implementation
+        if (base < 1){
+            throw new IllegalArgumentException();
+        }
+        Node cur = head;
+        int original_size = size();
+
+        for (int i= 0; i <= original_size; i++){
+            cur = cur.getNext();
+            if(i % base == 0){
+                cur.remove();
+            }
+
+
+        }
     }
 
     /**
      * Swap the nodes between index [0, splitIndex] of two lists
      *
-     * TODO: javadoc comments
+     * @param other another DoublyLinkedList to swap with
+     * @param splitIndex the index that set a bar for swapping
      */
     public void swapSegment(DoublyLinkedList other, int splitIndex) {
         // TODO: complete implementation
+        Node cur = head;
+        Node other_cur = other.head;
+        for(int i = 0; i <= splitIndex; i++){
+            cur = cur.getNext();
+            other_cur = other_cur.getNext();
+            Node Next = cur.getNext();
+            Node other_Next = other_cur.getNext();
+            Node Previous = cur.getPrev();
+            Node other_Previous = other_cur.getPrev();
+            cur.setNext(other_Next);
+            cur.setPrev(other_Previous);
+            other_Next.setPrev(cur);
+            other_Previous.setNext(cur);
+            other_cur.setNext(Next);
+            other_cur.setPrev(Previous);
+            Next.setPrev(other_cur);
+            Previous.setNext(other_cur);
+
+
+        }
     }
 
 }

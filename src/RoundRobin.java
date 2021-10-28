@@ -1,34 +1,96 @@
 /*
- * NAME: TODO
- * PID: TODO
+ * NAME: Zhixing Jiang
+ * PID: A16400450
  */
 
 /**
- * TODO
+ * RoundRobin class contains two kinds of constructor a handleAllTask method
+ * and a main method. It simulates the idea of roundRobin.
  *
- * @author TODO
- * @since TODO
+ * @author Zhixing Jiang
+ * @since October 27, 2021
  */
 public class RoundRobin {
 
     /* constants */
     private static final String TASK_HANDLED = "All tasks are already handled.";
-
+    private static final int DEFAULT = 4;
     /* instance variables */
     private DoublyLinkedList<Task> waitlist, finished;
     private int quantum, burstTime, waitTime;
-
+    /**
+     * Construct a new RoundRobin object with a DEFAULT quantum
+     *
+     */
     public RoundRobin(Task[] toHandle) {
         /* TODO */
+        this(DEFAULT,toHandle);
     }
-
+    /**
+     * Construct a new RoundRobin object with an imported quantum
+     *
+     * @param quantum the input quantum
+     * @param toHandle the Task arraylist
+     */
     public RoundRobin(int quantum, Task[] toHandle) {
         /* TODO */
-    }
+        if(quantum < 1){
+            throw new IllegalArgumentException();
+        }
+        if(toHandle == null || toHandle.length == 0){
+            throw new IllegalArgumentException();
+        }
 
+        this.waitlist = new DoublyLinkedList<Task>();
+        for (int i = 0; i < toHandle.length;i++){
+            waitlist.add(toHandle[i]);
+        }
+        this.finished = new DoublyLinkedList<Task>();
+        this.quantum = quantum;
+        this.burstTime = 0;
+        this.waitTime = 0;
+    }
+    /**
+     * Simulate the roundRobin process and handle all tasks
+     *
+     * @return the output that demonstrate the result of the simulation
+     */
     public String handleAllTasks() {
-        /* TODO */
-        return null;
+
+        if (waitlist.isEmpty()){
+            return TASK_HANDLED;
+        }
+        while(!waitlist.isEmpty()){
+            Task cur = waitlist.get(0);
+            for (int i = 0; i < quantum; i++) {
+                boolean result = cur.handleTask();
+                if (result) {
+                    burstTime++;
+                    waitTime += (waitlist.size() - 1);
+                }
+            }
+                if(cur.isFinished()){
+                    finished.add(waitlist.remove(0));
+                }
+                else{
+                    waitlist.add(waitlist.remove(0));
+                }
+
+            }
+
+        String output = "All tasks are handled within ";
+        output += Integer.toString(burstTime);
+        output += " units of burst time and ";
+        output += Integer.toString(waitTime);
+        output += " units of wait time. The tasks are " +
+                "finished in this order:\n";
+
+        for(int i = 0; i < finished.size() - 1; i++){
+            output += finished.get(i).toString() + " -> ";
+        }
+        output += finished.get(finished.size()-1);
+
+        return output;
     }
 
     /**
